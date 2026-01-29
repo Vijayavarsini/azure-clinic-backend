@@ -45,6 +45,5 @@ def update_patient(id):
 def delete_patient(id):
     return jsonify({"message": f"Delete patient {id} (logic only)"})
 
-
 if __name__ == "__main__":
     app.run(debug=True)
