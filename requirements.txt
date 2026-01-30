@@ -1,8 +1,7 @@
 # requirements.txt
 
-flask
-flask_sqlalchemy
+Flask
+Flask_SQLAlchemy
 gunicorn
-flask-cors
-flask-swagger-ui
-psycopg2-binary
+Flask-Cors
+Flask-Swagger-UI
