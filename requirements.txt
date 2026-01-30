@@ -5,3 +5,4 @@ flask_sqlalchemy
 gunicorn
 flask-cors
 flask-swagger-ui
+psycopg2-binary
