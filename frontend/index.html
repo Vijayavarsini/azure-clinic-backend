@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinic Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Clinic – Patient Management</h1>
+
+<section>
+    <h2>Add Patient</h2>
+    <input id="name" placeholder="Name">
+    <input id="age" type="number" placeholder="Age">
+    <input id="gender" placeholder="Gender">
+    <input id="phone" placeholder="Phone">
+    <button onclick="addPatient()">Add</button>
+</section>
+
+<section>
+    <h2>Patients</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Phone</th><th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="patients"></tbody>
+    </table>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,8 +1,12 @@
 from flask import Flask, request, jsonify
 from config import SQLALCHEMY_DATABASE_URI
 from models import db, Patient
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -64,4 +68,4 @@ def delete_patient(id):
     return jsonify({"message": "Patient deleted"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000)
