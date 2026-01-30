@@ -4,6 +4,7 @@ from models import db, Patient
 from flask_cors import CORS
 from errors import not_found_error, bad_request_error
 from validators import validate_patient
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 
@@ -16,6 +17,19 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+SWAGGER_URL = "/swagger"
+API_URL = "/static/swagger.json"
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        "app_name": "Clinic Management API"
+    }
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 @app.route("/")
 def home():

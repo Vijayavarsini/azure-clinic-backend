@@ -1,0 +1,82 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Clinic Management API",
+    "description": "API documentation for Clinic Patient Management System",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/patients": {
+      "get": {
+        "summary": "Get all patients",
+        "responses": {
+          "200": {
+            "description": "List of patients"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new patient",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "patient",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "age": { "type": "integer" },
+                "gender": { "type": "string" },
+                "phone": { "type": "string" }
+              },
+              "required": ["name", "age"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Patient created"
+          }
+        }
+      }
+    },
+    "/patients/{id}": {
+      "put": {
+        "summary": "Update patient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete patient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient deleted"
+          }
+        }
+      }
+    }
+  }
+}
