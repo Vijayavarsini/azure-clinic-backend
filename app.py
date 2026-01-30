@@ -3,6 +3,7 @@ from config import SQLALCHEMY_DATABASE_URI
 from models import db, Patient
 from flask_cors import CORS
 from errors import not_found_error, bad_request_error
+from validators import validate_patient
 
 app = Flask(__name__)
 
@@ -28,12 +29,13 @@ def create_patient():
     if not data:
         return bad_request_error("JSON body is required")
 
-    if "name" not in data or "age" not in data:
-        return bad_request_error("Name and age are required")
+    error = validate_patient(data)
+    if error:
+        return bad_request_error(error)
 
     patient = Patient(
-        name=data["name"],
-        age=data["age"],
+        name=data["name"].strip(),
+        age=int(data["age"]),
         gender=data.get("gender"),
         phone=data.get("phone")
     )
@@ -66,14 +68,32 @@ def get_patients():
 # UPDATE
 @app.route("/patients/<int:id>", methods=["PUT"])
 def update_patient(id):
-    patient = Patient.query.get_or_404(id)
+    patient = Patient.query.get(id)
+
+    if not patient:
+        return not_found_error("Patient not found")
+
     data = request.json
+    if not data:
+        return bad_request_error("JSON body is required")
+
+    error = validate_patient({**{
+        "name": patient.name,
+        "age": patient.age,
+        "phone": patient.phone
+    }, **data})
+
+    if error:
+        return bad_request_error(error)
+
     patient.name = data.get("name", patient.name)
-    patient.age = data.get("age", patient.age)
+    patient.age = int(data.get("age", patient.age))
     patient.gender = data.get("gender", patient.gender)
     patient.phone = data.get("phone", patient.phone)
+
     db.session.commit()
-    return jsonify({"message": "Patient updated"})
+
+    return jsonify({"message": "Patient updated"}), 200
 
 # DELETE
 @app.route("/patients/<int:id>", methods=["DELETE"])
