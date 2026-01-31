@@ -1,4 +1,5 @@
-const API = "http://127.0.0.1:5000";
+// Use relative URLs for API calls (same origin as the deployed app)
+const API = window.location.origin;
 
 function loadPatients() {
     fetch(`${API}/patients`)

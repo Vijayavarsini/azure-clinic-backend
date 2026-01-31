@@ -1,12 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from config import SQLALCHEMY_DATABASE_URI
 from models import db, Patient
 from flask_cors import CORS
 from errors import not_found_error, bad_request_error
 from validators import validate_patient
 from flask_swagger_ui import get_swaggerui_blueprint
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend', static_url_path='')
 
 CORS(app)
 
@@ -14,6 +15,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+
+# Initialize database on startup
+with app.app_context():
+    db.create_all()
 
 SWAGGER_URL = "/swagger"
 API_URL = "/static/swagger.json"
@@ -30,7 +35,13 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 @app.route("/")
 def home():
-    return "Backend running"
+    return send_from_directory('frontend', 'index.html')
+
+@app.route("/<path:path>")
+def serve_static(path):
+    if os.path.exists(os.path.join('frontend', path)):
+        return send_from_directory('frontend', path)
+    return send_from_directory('frontend', 'index.html')
 
 # CREATE
 @app.route("/patients", methods=["POST"])

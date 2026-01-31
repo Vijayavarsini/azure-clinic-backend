@@ -67,6 +67,25 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A60DAAD0F0434F41B8AC1E022D340B64 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5853F0429AF4470793169D29D0DCFFE4 }}
 
+      - name: Configure App Settings for Oryx Build
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'clinic-backend-varsini'
+          mask-inputs: false
+          app-settings-json: |
+            [
+              {
+                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+                "value": "true",
+                "slotSetting": false
+              },
+              {
+                "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                "value": "true",
+                "slotSetting": false
+              }
+            ]
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
