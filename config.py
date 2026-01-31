@@ -7,9 +7,7 @@ if BASE_DIR == "/":
 
 DB_PATH = os.path.join(BASE_DIR, "clinic.db")
 
-SQLALCHEMY_DATABASE_URI = os.environ.get(
-    "DATABASE_URL",
-    f"sqlite:///{DB_PATH}"
-)
+# Force SQLite - ignore Azure's auto-configured DATABASE_URL for PostgreSQL
+SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_PATH}"
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
